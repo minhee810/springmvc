@@ -1,9 +1,11 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,7 +69,7 @@ public class RequestParamController {
     @ResponseBody
     @RequestMapping("/request-param-default")
     public String requestParamDefault(@RequestParam(required = true, defaultValue = "guest") String username,   // 꼭 있어야 함.
-                                       @RequestParam(required = false, defaultValue = "-1") int age) {    // 꼭 없어도 됨.
+                                      @RequestParam(required = false, defaultValue = "-1") int age) {    // 꼭 없어도 됨.
 
         log.info("username ={}, age ={}", username, age);
 
@@ -78,9 +80,34 @@ public class RequestParamController {
     @RequestMapping("/request-param-map")
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {    // 꼭 없어도 됨.
 
-        log.info("username ={}, age ={}", paramMap.get("username") );
+        log.info("username ={}, age ={}", paramMap.get("username"));
 
         return "ok";
     }
 
+
+    // @ModelAttribute 활용하기
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+
+        log.info("username  ={}, age ={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData ={}", helloData);
+
+        return "ok";
+
+    }
+
+    // @ 생략 가능
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+
+        log.info("modelAttributeV2");
+
+        log.info("username  ={}, age ={}", helloData.getUsername(), helloData.getAge());
+
+        return "ok";
+
+    }
 }
